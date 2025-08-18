@@ -11,6 +11,11 @@ struct ContentView: View {
     
     @State var page: String = "settings"
     
+    var pages: [String] = ["home", "profile", "settings"]
+    
+    init() {
+        UITabBar.appearance().isHidden = true
+    }
     var body: some View {
         
         ZStack(alignment: .bottom) {
@@ -23,35 +28,56 @@ struct ContentView: View {
                     .tag("settings")
             }
             HStack {
-                // 1
-                Button {
-                    page = "home"
-                } label: {
-                    HStack {
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
+                
+                //
+                ForEach(pages,id: \.self) { page in
+                    TabBarItem(page: $page, image: page)
                 }
                 
-                //2
-                Button {
-                    page = "profile"
-                } label: {
-                    HStack {
-                        Image(systemName: "house")
-                        Text("Second")
-                    }
-                }
-                
-                //3
-                Button {
-                    page = "settings"
-                } label: {
-                    HStack {
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
-                }
+//                // 1
+//                Button {
+//                    page = "home"
+//                } label: {
+//                    HStack {
+//                        Image(systemName: "house")
+//                        Text("Home")
+//                        if page == "house" {
+//                            Circle()
+//                                .fill(Color.green)
+//                                .frame(width: 8, height: 8)
+//                        }
+//                    }
+//                }
+//                
+//                //2
+//                Button {
+//                    page = "profile"
+//                } label: {
+//                    HStack {
+//                        Image(systemName: "person")
+//                        Text("Second")
+//                        if page == "profile" {
+//                            Circle()
+//                                .fill(Color.green)
+//                                .frame(width: 8, height: 8)
+//                        }
+//                    }
+//                }
+//                
+//                //3
+//                Button {
+//                    page = "settings"
+//                } label: {
+//                    HStack {
+//                        Image(systemName: "plus")
+//                        Text("Home")
+//                        if page == "settings" {
+//                            Circle()
+//                                .fill(Color.green)
+//                                .frame(width: 8, height: 8)
+//                        }
+//                    }
+//                }
 
             }
             .padding()
@@ -74,6 +100,27 @@ struct SettingsPage: View {
                 Text("Save")
             }
 
+        }
+    }
+}
+
+struct TabBarItem: View {
+    
+    @Binding var page: String
+    var image: String
+    var body: some View {
+        Button {
+            page = image
+        } label: {
+            HStack {
+                Image(systemName: image)
+                Text(image)
+                if page == image {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 8, height: 8)
+                }
+            }
         }
     }
 }
