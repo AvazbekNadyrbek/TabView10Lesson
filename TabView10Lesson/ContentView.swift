@@ -10,8 +10,10 @@ import SwiftUI
 struct ContentView: View {
     
     @State var page: String = "settings"
+    @State var isShow: Bool = false
     
-    var pages: [String] = ["home", "profile", "settings"]
+    
+    var pages: [String] = ["house", "folder", "plus", "message","person"]
     
     init() {
         UITabBar.appearance().isHidden = true
@@ -20,76 +22,40 @@ struct ContentView: View {
         
         ZStack(alignment: .bottom) {
             TabView(selection: $page) {
-                Text("Home")
+                HomeViewMain()
                     .tag("home")
-                Text("Profile")
-                    .tag("profile")
+                Text("Folder")
+                    .tag("folder")
+                Text("Plus")
+                    .tag("plus")
+                Text("Message")
+                    .tag("message")
                 SettingsPage(page: $page)
-                    .tag("settings")
+                    .tag("person")
             }
             HStack {
                 
-                //
                 ForEach(pages,id: \.self) { page in
-                    TabBarItem(page: $page, image: page)
+                    TabBarItem(page: $page, isShowSheet: $isShow , image: page)
                 }
-                
-//                // 1
-//                Button {
-//                    page = "home"
-//                } label: {
-//                    HStack {
-//                        Image(systemName: "house")
-//                        Text("Home")
-//                        if page == "house" {
-//                            Circle()
-//                                .fill(Color.green)
-//                                .frame(width: 8, height: 8)
-//                        }
-//                    }
-//                }
-//                
-//                //2
-//                Button {
-//                    page = "profile"
-//                } label: {
-//                    HStack {
-//                        Image(systemName: "person")
-//                        Text("Second")
-//                        if page == "profile" {
-//                            Circle()
-//                                .fill(Color.green)
-//                                .frame(width: 8, height: 8)
-//                        }
-//                    }
-//                }
-//                
-//                //3
-//                Button {
-//                    page = "settings"
-//                } label: {
-//                    HStack {
-//                        Image(systemName: "plus")
-//                        Text("Home")
-//                        if page == "settings" {
-//                            Circle()
-//                                .fill(Color.green)
-//                                .frame(width: 8, height: 8)
-//                        }
-//                    }
-//                }
-
+                .frame(maxWidth: .infinity)
+            
+            }
+            .sheet(isPresented: $isShow) {
+                MockDataView()
+                    .presentationDetents([.height(150), .height(300)])
             }
             .padding()
-            .background(Color.gray.opacity(0.5))
-            .padding(.bottom, 1)
+            .background(.appBackground)
+           // .padding(.horizontal, 30)
         }
         
     }
 }
 
+
 struct SettingsPage: View {
-    
+    @State var isShow: Bool = false
     @Binding var page: String
     var body: some View {
         VStack {
@@ -99,6 +65,12 @@ struct SettingsPage: View {
             } label: {
                 Text("Save")
             }
+            
+            Button {
+                
+            } label: {
+                Text("Sheet")
+            }
 
         }
     }
@@ -107,21 +79,40 @@ struct SettingsPage: View {
 struct TabBarItem: View {
     
     @Binding var page: String
+    @Binding var isShowSheet: Bool
     var image: String
     var body: some View {
         Button {
-            page = image
+            
+            if image == "plus" {
+                isShowSheet.toggle()
+            } else {
+                page = image
+            }
+            
         } label: {
             HStack {
-                Image(systemName: image)
-                Text(image)
-                if page == image {
+                if image == "plus" {
                     Circle()
-                        .fill(Color.green)
-                        .frame(width: 8, height: 8)
+                        .frame(width: 40, height: 40)
+                        .foregroundStyle(.white)
+                        .overlay {
+                            Image(systemName: "plus")
+                                .foregroundStyle(.black)
+                        }
+                } else {
+                    Image(systemName: page == image ? "\(image).fill" : image)
+                        .foregroundStyle(.white)
                 }
+                
             }
         }
+    }
+}
+
+struct MockDataView: View {
+    var body: some View {
+        Text("MockData")
     }
 }
 

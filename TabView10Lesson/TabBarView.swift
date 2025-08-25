@@ -65,6 +65,7 @@ struct SettingsView: View {
         }
     }
 }
+
 #Preview {
     TabBarView()
 }
