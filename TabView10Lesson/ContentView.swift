@@ -24,7 +24,7 @@ struct ContentView: View {
             TabView(selection: $page) {
                 HomeViewMain()
                     .tag("home")
-                Text("Folder")
+                SecondPage()
                     .tag("folder")
                 Text("Plus")
                     .tag("plus")
@@ -46,7 +46,8 @@ struct ContentView: View {
                     .presentationDetents([.height(150), .height(300)])
             }
             .padding()
-            .background(.appBackground)
+            .background(.gray)
+            .clipShape(Capsule())
            // .padding(.horizontal, 30)
         }
         
